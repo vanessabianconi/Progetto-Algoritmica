@@ -1,0 +1,54 @@
+def nodo(x, s, d):
+    return [x, s, d]
+
+def foglia(x):
+    return [x, None, None]
+
+def radice(A):
+    return A[0]
+
+def sinistro(A):
+    return A[1]
+
+def destro(A):
+    return A[2]
+
+def isVuoto(A):
+    return A is None
+
+def isFoglia(A):
+    return isVuoto(sinistro(A)) and isVuoto(destro(A))
+
+def valuta(E):
+    if isFoglia(E):
+        return radice(E)
+    if radice(E) == '+':
+        return valuta(sinistro(E)) + valuta(destro(E))
+    if radice(E) == '*':
+        return valuta(sinistro(E)) * valuta(destro(E))
+    if radice(E) == '/':
+        return valuta(sinistro(E)) // valuta(destro(E))
+    if radice(E) == '-':
+        return valuta(sinistro(E)) - valuta(destro(E))
+
+def e2str(E):
+    if isFoglia(E):
+        return str(radice(E))
+    else:
+        risultato =  '(' + str(e2str(sinistro(E))) + str(radice(E)) + str(e2str(destro(E))) + ')'
+    return risultato
+
+print(" OUTPUT: ")
+E1 = nodo('*', foglia(10), foglia(3))
+E2 = nodo('*', foglia(6), foglia(9))
+E = nodo('+', E1, E2)
+res = e2str(E)+" = "+str(valuta(E))
+print(res)
+if res == "((10*3)+(6*9)) = 84":
+    print(" RISULTATO CORRETTO")
+else:
+    print(" Errore, PROGETTO INSUFFICIENTE")
+
+OUTPUT: 
+((10*3)+(6*9)) = 84
+ RISULTATO CORRETTO
